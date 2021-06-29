@@ -2,48 +2,17 @@ import React, { useEffect, useState, useReducer, useCallback, useMemo } from 're
 
 import { Header } from './Header';
 import { Menu } from './Menu';
-import SpeakerData from './SpeakerData';
 import SpeakerDetail from './SpeakerDetail';
 
-import speakersReducer from './speakersReducer';
+import useSpeakerDataManager from './useSpeakerDataManager';
 
 const Speakers = ({ }) => {
   const [speakingSaturday, setSpeakingSaturday] = useState(true);
   const [speakingSunday, setSpeakingSunday] = useState(true);
 
   // const [speakerList, setSpeakerList] = useState([]);
-  const [speakerList, dispatch] = useReducer(speakersReducer, []) //using useReducer insted of useState
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    new Promise(function (resolve) {
-
-      setTimeout(function () { // to delay and show loading..
-        resolve();
-      }, 1000);
-
-    }).then(() => {
-
-      setIsLoading(false) //setting loading to false
-
-      const speakerListServerFilter = SpeakerData.filter(({ sat, sun }) => { //filtering based on sat & sun speaking
-        return (speakingSaturday && sat) || (speakingSunday && sun);
-      });
-
-      //setSpeakerList(speakerListServerFilter);
-
-      dispatch({ //using dispatch to set action type, it will invoke 'speakersReducer'
-        type: 'setSpeakerList',
-        data: speakerListServerFilter, // passs the filtered data & update state 'speakerList'
-      });
-    });
-
-    return () => {
-      console.log('cleanup');
-    };
-  }, []);
+  // const [speakerList, dispatch] = useReducer(speakersReducer, []) //using useReducer insted of useState
+  const {isLoading, speakerList, dispatch} = useSpeakerDataManager()
 
   const handleChangeSaturday = () => {
     setSpeakingSaturday(!speakingSaturday);
@@ -77,18 +46,10 @@ const Speakers = ({ }) => {
   const heartFavoriteHandler = useCallback((e, favoriteValue) => {
     e.preventDefault();
     const sessionId = parseInt(e.target.attributes['data-sessionid'].value); // get the ID value from attribute convert into int
-    // setSpeakerList(
-    //   speakerList.map((item) => {
-    //     if (item.id === sessionId) {
-    //       return { ...item, favorite: favoriteValue };
-    //     }
-    //     return item;
-    //   }),
-    // );
 
     dispatch({
       type: favoriteValue === true ? "favourite" : "unfavourite",
-      sessionId: sessionId
+      id: sessionId
 
     })
   }, []);
