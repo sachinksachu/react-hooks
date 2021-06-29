@@ -28,7 +28,12 @@ useEffect(() => {
     };
 }, []);
 
-return {isLoading, speakerList, dispatch}
+function toggleSpeakerFavourite(speakerRec){
+    speakerRec.favorite === true ? 
+    dispatch({type : 'unfavourite', id : speakerRec.id}) : dispatch({type : 'favourite', id : speakerRec.id})
+}
+
+return {isLoading, speakerList, toggleSpeakerFavourite}
 
 }
 

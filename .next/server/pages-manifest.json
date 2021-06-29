@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/emailValidating": "pages/emailValidating.js",
-  "/speakers": "pages/speakers.js"
+  "/speakers": "pages/speakers.js",
+  "/emailValidating": "pages/emailValidating.js"
 }

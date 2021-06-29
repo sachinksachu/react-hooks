@@ -12,7 +12,7 @@ const Speakers = ({ }) => {
 
   // const [speakerList, setSpeakerList] = useState([]);
   // const [speakerList, dispatch] = useReducer(speakersReducer, []) //using useReducer insted of useState
-  const {isLoading, speakerList, dispatch} = useSpeakerDataManager()
+  const {isLoading, speakerList, toggleSpeakerFavourite} = useSpeakerDataManager()
 
   const handleChangeSaturday = () => {
     setSpeakingSaturday(!speakingSaturday);
@@ -43,15 +43,11 @@ const Speakers = ({ }) => {
     ? []
     : newSpeakerList
 
-  const heartFavoriteHandler = useCallback((e, favoriteValue) => {
+  const heartFavoriteHandler = useCallback((e, speakerRec) => {
     e.preventDefault();
-    const sessionId = parseInt(e.target.attributes['data-sessionid'].value); // get the ID value from attribute convert into int
+    // const sessionId = parseInt(e.target.attributes['data-sessionid'].value); // get the ID value from attribute convert into int
 
-    dispatch({
-      type: favoriteValue === true ? "favourite" : "unfavourite",
-      id: sessionId
-
-    })
+    toggleSpeakerFavourite(speakerRec)
   }, []);
 
   if (isLoading) return <div>Loading...</div>;
@@ -90,15 +86,11 @@ const Speakers = ({ }) => {
         <div className="row">
           <div className="card-deck">
             {speakerListFiltered ? speakerListFiltered.map(
-              ({ id, firstName, lastName, bio, favorite }) => {
+              (speakerRec) => {
                 return (
                   <SpeakerDetail
-                    key={id}
-                    id={id}
-                    favorite={favorite}
-                    firstName={firstName}
-                    lastName={lastName}
-                    bio={bio}
+                    key={speakerRec.id}
+                    speakerRec={speakerRec}
                     onHeartFavoriteHandler={heartFavoriteHandler}
                   />
                 );

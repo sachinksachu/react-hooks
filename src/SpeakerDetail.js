@@ -2,15 +2,11 @@ import ImageToggleOnScroll from './ImageToggleOnScroll';
 import React from 'react';
 
 const SpeakerDetail =  ({
-  id,
-  firstName,
-  lastName,
-  favorite,
-  bio,
+  speakerRec,
   onHeartFavoriteHandler,
 }) => {
 
-  console.log(`Speaker : ${id} ${firstName} ${lastName}`);
+  const {id, firstName, lastName, favorite} = speakerRec;
   return (
 
     
@@ -26,17 +22,17 @@ const SpeakerDetail =  ({
       <div className="card-body">
         <h4 className="card-title">
           <button
-            data-sessionid={id} //attribute to store ID
+              
             className={favorite ? 'heartredbutton' : 'heartdarkbutton'}
             onClick={(e) => {
-              onHeartFavoriteHandler(e, !favorite);
+              onHeartFavoriteHandler(e, speakerRec);
             }}
           />
           <span>
             {firstName} {lastName}
           </span>
         </h4>
-        <span>{bio}</span>
+        
       </div>
     </div>
   );
